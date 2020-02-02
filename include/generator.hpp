@@ -3,8 +3,11 @@
 
 #include <string>
 
+#include "syntax.hpp"
+
 struct generator 
 {
+	auto handle(ins i) -> void;
 
 	auto handle_psh(int num) -> void;
 	auto handle_pop() -> void;

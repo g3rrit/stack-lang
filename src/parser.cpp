@@ -37,12 +37,12 @@ bool is_white(char _c)
 parser::parser(const std::string& path) 
 	: is(path) {}
 
-auto parser::next() -> token 
+auto parser::next() -> ins 
 {
 	_white();
 	int c = is.peek();
 	if (c == EOF) {
-		return std::make_pair(tag::END, std::monostate());
+		return std::make_unique<std::pair<tag, var>>(tag::END, std::monostate());
 	}
 
 	if (!is_alpha(c)) {
@@ -53,27 +53,27 @@ auto parser::next() -> token
 
 	if        (id == "psh") {
 		int v = parse_int();
-		return std::make_pair(tag::PSH, v);
+		return std::make_unique<std::pair<tag, var>>(tag::PSH, v);
 	} else if (id == "pop")  {
-		return std::make_pair(tag::POP, std::monostate());
+		return std::make_unique<std::pair<tag, var>>(tag::POP, std::monostate());
 	} else if (id == "jnz")  {
 		std::string label = parse_id();
-		return std::make_pair(tag::JNZ, std::move(label));
+		return std::make_unique<std::pair<tag, var>>(tag::JNZ, std::move(label));
 	} else if (id == "dup")  {
 		int v = parse_int();
-		return std::make_pair(tag::DUP, v);
+		return std::make_unique<std::pair<tag, var>>(tag::DUP, v);
 	} else if (id == "swp") {
-		return std::make_pair(tag::SWP, std::monostate());
+		return std::make_unique<std::pair<tag, var>>(tag::SWP, std::monostate());
 	} else if (id == "add")  {
-		return std::make_pair(tag::ADD, std::monostate());
+		return std::make_unique<std::pair<tag, var>>(tag::ADD, std::monostate());
 	} else if (id == "mul")  {
-		return std::make_pair(tag::MUL, std::monostate());
+		return std::make_unique<std::pair<tag, var>>(tag::MUL, std::monostate());
 	} else {
 		if (is.peek() == ':') { // label
 			is.get();
-			return std::make_pair(tag::LABEL, std::move(id));
+			return std::make_unique<std::pair<tag, var>>(tag::LABEL, std::move(id));
 		} else {                // jmp
-			return std::make_pair(tag::JMP, std::move(id));
+			return std::make_unique<std::pair<tag, var>>(tag::JMP, std::move(id));
 		}
 	}
 }

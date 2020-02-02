@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <variant>
+#include <memory>
 
 enum tag 
 {
@@ -24,6 +25,6 @@ enum tag
 
 
 typedef std::variant<int, std::string, std::monostate> var;
-typedef std::pair<tag, var> token;
+typedef std::unique_ptr<std::pair<tag, var>> ins;
 
 #endif

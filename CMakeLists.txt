@@ -13,6 +13,7 @@ add_executable(stack-lang
 	src/main.cpp
 	src/err.cpp
 	src/parser.cpp
+	src/eval.cpp
 	src/generator.cpp
 	src/test.cpp)
 
