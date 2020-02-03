@@ -31,9 +31,6 @@ auto generator::handle(ins i) -> void
 		case tag::JMP:
 			handle_jmp(std::get<std::string>(v));
 			break;
-		case tag::LABEL:
-			handle_label(std::get<std::string>(v));
-			break;
 	}
 }
 

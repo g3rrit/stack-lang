@@ -15,6 +15,7 @@ struct vm
 	int pos = 0;
 
 	auto add(ins i) -> void;
+	auto add_label(const std::string l) -> void;
 	
 	auto run() -> void;
 
@@ -25,6 +26,8 @@ struct vm
 	auto eval_swp() -> void;
 	auto eval_add() -> void;
 	auto eval_mul() -> void;
+	auto eval_prt() -> void;
+	auto eval_sze() -> void;
 	auto eval_jmp(const std::string& id) -> void;
 };
 

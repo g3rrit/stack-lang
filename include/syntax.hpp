@@ -14,17 +14,14 @@ enum tag
 	SWP,
 	ADD,
 	MUL,
-
 	JMP,
-
-
-	LABEL,
-
-	END,
+	PRT,
+	SZE,
 };
 
+using var = std::variant<int, std::string, std::monostate>;
+using ins = std::unique_ptr<std::pair<tag, var>>;
 
-typedef std::variant<int, std::string, std::monostate> var;
-typedef std::unique_ptr<std::pair<tag, var>> ins;
+using token = std::variant<std::string, ins, std::monostate>;
 
 #endif

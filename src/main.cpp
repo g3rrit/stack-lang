@@ -4,6 +4,7 @@
 #include "generator.hpp"
 #include "syntax.hpp"
 #include "eval.hpp"
+#include "util.hpp"
 
 #include <fstream>
 
@@ -23,18 +24,35 @@ auto main() -> int
 
 	try {
 		for (;;) {
-			ins i = p.next();
+			token t = p.next();
+			if (std::holds_alternative<std::string>(t)) {
+				log::log("label:");
+				v.add_label(std::move(std::get<std::string>(t)));
+			} else if (std::holds_alternative<ins>(t)) {
+				log::log("ins");
+				v.add(std::move(std::get<ins>(t)));
+			} else if (std::holds_alternative<std::monostate>(t)) {
+				break;
+			}
+			/*
 			if (std::get<0>(*i) == tag::END) {
 				v.add(std::move(i));
 				break;
 			}
 			v.add(std::move(i));
+			*/
 		}
 	} catch (err& e) {
 		log::log("error:", e.what());
 	}
 
-	v.run();
+	log::log("running vm");
+
+	try {
+		v.run();
+	} catch (std::exception& e) {
+		log::log("error:", e.what());
+	}
 
 	log::log("done!");
 

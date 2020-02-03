@@ -37,12 +37,13 @@ bool is_white(char _c)
 parser::parser(const std::string& path) 
 	: is(path) {}
 
-auto parser::next() -> ins 
+auto parser::next() -> token 
 {
 	_white();
 	int c = is.peek();
 	if (c == EOF) {
-		return std::make_unique<std::pair<tag, var>>(tag::END, std::monostate());
+		return std::monostate();
+		//return std::make_unique<std::pair<tag, var>>(tag::END, std::monostate());
 	}
 
 	if (!is_alpha(c)) {
@@ -68,10 +69,15 @@ auto parser::next() -> ins
 		return std::make_unique<std::pair<tag, var>>(tag::ADD, std::monostate());
 	} else if (id == "mul")  {
 		return std::make_unique<std::pair<tag, var>>(tag::MUL, std::monostate());
+	} else if (id == "prt")  {
+		return std::make_unique<std::pair<tag, var>>(tag::PRT, std::monostate());
+	} else if (id == "sze")  {
+		return std::make_unique<std::pair<tag, var>>(tag::SZE, std::monostate());
 	} else {
 		if (is.peek() == ':') { // label
 			is.get();
-			return std::make_unique<std::pair<tag, var>>(tag::LABEL, std::move(id));
+			return std::move(id);
+			//return std::make_unique<std::pair<tag, var>>(tag::LABEL, std::move(id));
 		} else {                // jmp
 			return std::make_unique<std::pair<tag, var>>(tag::JMP, std::move(id));
 		}

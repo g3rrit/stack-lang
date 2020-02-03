@@ -15,7 +15,7 @@ struct parser
 
 	parser(const std::string& path);
 
-	auto next() -> ins;
+	auto next() -> token;
 
 	template <class R, class S, class E, class M>
 	auto _parse(const char* errs, S s, E e, M m) -> R;
