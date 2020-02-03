@@ -14,7 +14,7 @@ auto vm::add_label(const std::string l) -> void
 	if (lmap.count(l) > 0) {
 		throw err("label already presend");
 	}
-	lmap[std::move(l)] = pos;
+	lmap[std::move(l)] = txt.size() - 1;
 }
 
 auto vm::run() -> void 
@@ -53,6 +53,8 @@ auto vm::run() -> void
 		case tag::JMP:
 			eval_jmp(std::get<std::string>(v));
 			break;
+		case tag::SZE:
+			eval_sze();
 		}
 		pos++;
 	}
@@ -60,13 +62,11 @@ auto vm::run() -> void
 
 auto vm::eval_psh(int num) -> void 
 {
-	log::log("psh", num);	
 	stack.push_back(num);
 }
 
 auto vm::eval_pop() -> void 
 {
-	log::log("pop");	
 	if (stack.size() <= 0) {
 		throw err("unable to pop empty stack");
 	}
@@ -75,7 +75,6 @@ auto vm::eval_pop() -> void
 
 auto vm::eval_jnz(const std::string& id) -> void 
 {
-	log::log("jnz", id);	
 	if (stack.size() <= 1) {
 		throw err("empty stack");
 	}
@@ -89,7 +88,6 @@ auto vm::eval_jnz(const std::string& id) -> void
 
 auto vm::eval_dup(int num) -> void 
 {
-	log::log("dup", num);	
 	if (num >= stack.size()) {
 		throw err("stack not big enough to dup elem");
 	}
@@ -98,7 +96,6 @@ auto vm::eval_dup(int num) -> void
 
 auto vm::eval_swp() -> void 
 {
-	log::log("swp");
 	if (stack.size() <= 1) {
 		throw err("unable to swp in empty stack");
 	}
@@ -109,7 +106,6 @@ auto vm::eval_swp() -> void
 
 auto vm::eval_add() -> void 
 {
-	log::log("add");
 	if (stack.size() <= 1) {
 		throw err("unable to add");
 	}
@@ -118,7 +114,6 @@ auto vm::eval_add() -> void
 
 auto vm::eval_mul() -> void 
 {
-	log::log("mul");	
 	if (stack.size() <= 1) {
 		throw err("unable to mul");
 	}
@@ -127,7 +122,6 @@ auto vm::eval_mul() -> void
 
 auto vm::eval_jmp(const std::string& id) -> void 
 {
-	log::log("jmp", id);	
 	if (lmap.count(id) == 0) {
 		throw err("label " + id + " not defined");
 	}
@@ -136,15 +130,13 @@ auto vm::eval_jmp(const std::string& id) -> void
 
 auto vm::eval_prt() -> void 
 {
-	log::log("prt");
-	if (stack.size() <= 1) {
+	if (stack.size() <= 0) {
 		throw err("unable to print empty stack");
 	}
-	std::cout << "STACK [" << stack.size() - 1 << "] - " << stack.back() << std::endl;
+	std::cout << "STACK [" << stack.size() - 1 << "] | " << stack.back() << std::endl;
 }
 
 auto vm::eval_sze() -> void
 {
-	log::log("sze");
 	stack.push_back(stack.size());
 }

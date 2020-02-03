@@ -8,7 +8,7 @@
 
 #include <fstream>
 
-const std::string VERSION = "0.0.1";
+const std::string VERSION = "0.1.1";
 
 namespace test {
 	void test();
@@ -26,10 +26,8 @@ auto main() -> int
 		for (;;) {
 			token t = p.next();
 			if (std::holds_alternative<std::string>(t)) {
-				log::log("label:");
 				v.add_label(std::move(std::get<std::string>(t)));
 			} else if (std::holds_alternative<ins>(t)) {
-				log::log("ins");
 				v.add(std::move(std::get<ins>(t)));
 			} else if (std::holds_alternative<std::monostate>(t)) {
 				break;
