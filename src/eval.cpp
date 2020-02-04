@@ -30,7 +30,7 @@ auto vm::run() -> void
 			eval_psh(std::get<int>(v));
 			break;
 		case tag::POP:
-			eval_pop();
+			eval_pop(std::get<int>(v));
 			break;
 		case tag::JNZ:
 			eval_jnz(std::get<std::string>(v));
@@ -65,12 +65,14 @@ auto vm::eval_psh(int num) -> void
 	stack.push_back(num);
 }
 
-auto vm::eval_pop() -> void 
+auto vm::eval_pop(int num) -> void 
 {
 	if (stack.size() <= 0) {
 		throw err("unable to pop empty stack");
 	}
-	stack.pop_back();
+	for (;num;num--) {
+		stack.pop_back();
+	}
 }
 
 auto vm::eval_jnz(const std::string& id) -> void 
@@ -133,7 +135,7 @@ auto vm::eval_prt() -> void
 	if (stack.size() <= 0) {
 		throw err("unable to print empty stack");
 	}
-	std::cout << "STACK [" << stack.size() - 1 << "] | " << stack.back() << std::endl;
+	log::log("STACK [", stack.size() - 1, "] |", stack.back());
 }
 
 auto vm::eval_sze() -> void

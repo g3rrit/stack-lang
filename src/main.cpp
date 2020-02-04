@@ -1,7 +1,6 @@
 #include "log.hpp"
 #include "parser.hpp"
 #include "err.hpp"
-#include "generator.hpp"
 #include "syntax.hpp"
 #include "eval.hpp"
 #include "util.hpp"
@@ -10,15 +9,16 @@
 
 const std::string VERSION = "0.1.1";
 
-namespace test {
-	void test();
-}
-
-auto main() -> int 
+auto main(int argc, char **argv) -> int 
 {
-	log::log("-- STACK LANG COMPILER", VERSION, "--");
+	if (argc <= 1) {
+		log::log("usage: stack-lang file");
+		return 0;
+	}
 
-	parser p { "../example/fib.sl" };
+	log::log("-- STACK LANG", VERSION, "--");
+
+	parser p { argv[1] };
 
 	vm v;
 
@@ -32,27 +32,22 @@ auto main() -> int
 			} else if (std::holds_alternative<std::monostate>(t)) {
 				break;
 			}
-			/*
-			if (std::get<0>(*i) == tag::END) {
-				v.add(std::move(i));
-				break;
-			}
-			v.add(std::move(i));
-			*/
 		}
 	} catch (err& e) {
-		log::log("error:", e.what());
+		log::log("PARSER ERROR:", e.what());
+		return 0;
 	}
 
-	log::log("running vm");
+	log::log("<< RUNNING >>");
 
 	try {
 		v.run();
 	} catch (std::exception& e) {
-		log::log("error:", e.what());
+		log::log("RUNTIME ERROR:", e.what());
+		return 0;
 	}
 
-	log::log("done!");
+	log::log("<< DONE >>");
 
 	return 0;
 }

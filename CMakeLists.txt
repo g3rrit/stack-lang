@@ -13,9 +13,7 @@ add_executable(stack-lang
 	src/main.cpp
 	src/err.cpp
 	src/parser.cpp
-	src/eval.cpp
-	src/generator.cpp
-	src/test.cpp)
+	src/eval.cpp)
 
 target_include_directories(stack-lang PUBLIC 
 	include)

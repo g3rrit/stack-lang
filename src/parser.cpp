@@ -56,7 +56,8 @@ auto parser::next() -> token
 		int v = parse_int();
 		return std::make_unique<std::pair<tag, var>>(tag::PSH, v);
 	} else if (id == "pop")  {
-		return std::make_unique<std::pair<tag, var>>(tag::POP, std::monostate());
+		int v = parse_int();
+		return std::make_unique<std::pair<tag, var>>(tag::POP, v);
 	} else if (id == "jnz")  {
 		std::string label = parse_id();
 		return std::make_unique<std::pair<tag, var>>(tag::JNZ, std::move(label));

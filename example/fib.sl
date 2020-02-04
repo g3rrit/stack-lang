@@ -8,7 +8,7 @@ psh 0
 psh 0
 
 fib:
-pop pop pop
+pop 3
 add
 prt
 

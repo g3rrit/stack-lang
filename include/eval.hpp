@@ -20,7 +20,7 @@ struct vm
 	auto run() -> void;
 
 	auto eval_psh(int num) -> void;
-	auto eval_pop() -> void;
+	auto eval_pop(int num) -> void;
 	auto eval_jnz(const std::string& id) -> void;
 	auto eval_dup(int num) -> void;
 	auto eval_swp() -> void;
